@@ -8,8 +8,8 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const config = new DocumentBuilder()
-    .setTitle('Notes API')
-    .setDescription('The notes API description')
+    .setTitle('Trello API')
+    .setDescription('Trello copy')
     .setVersion('1.0')
     .build();
 

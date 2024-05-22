@@ -18,7 +18,7 @@ export class CommentController {
     @ApiBearerAuth()
     @ApiOperation({ summary: 'Создать комментарий' })
     @ApiResponse({ status: 201, description: 'Комментарий успешно создан' })
-    @ApiResponse({ status: 400, description: "Неверные данные" })
+    @ApiResponse({ status: 400, description: AppConstants.BAD_REQUEST })
     @ApiResponse({ status: 401, description: AppConstants.UNAUTHORIZED })
     @ApiResponse({ status: 403, description: AppConstants.FORBIDDEN })
     async create(@Body() dto: CreateCommentDto) {

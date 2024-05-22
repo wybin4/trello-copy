@@ -4,6 +4,7 @@ import { Repository } from "typeorm";
 import { ColumnEntity } from "../entities/column.entity";
 import { IColumn } from "../interfaces/column.interface";
 import { UpdateColumnDto } from "../dtos/column.dto";
+import { ColumnConstants } from "../constants/column.constant";
 
 @Injectable()
 export class ColumnService {
@@ -22,7 +23,7 @@ export class ColumnService {
     async create(title: string, userId: number): Promise<IColumn> {
         const existingColumn = await this.columnRepository.findOne({ where: { title, userId } });
         if (existingColumn) {
-            throw new BadRequestException('Такая колонка уже существует');
+            throw new BadRequestException(ColumnConstants.ALREADY_EXISTS);
         }
         return this.columnRepository.save({ title, userId });
     }
@@ -30,7 +31,7 @@ export class ColumnService {
     async update(dto: UpdateColumnDto): Promise<IColumn> {
         const existingColumn = await this.columnRepository.findOne({ where: { id: dto.id } });
         if (!existingColumn) {
-            throw new NotFoundException('Такая колонка не существует');
+            throw new NotFoundException(ColumnConstants.NOT_FOUND);
         }
         existingColumn.title = dto.title;
         return this.columnRepository.save(existingColumn);
@@ -39,7 +40,7 @@ export class ColumnService {
     async delete(id: number): Promise<void> {
         const existingColumn = await this.columnRepository.findOne({ where: { id } });
         if (!existingColumn) {
-            throw new NotFoundException('Такая колонка не существует');
+            throw new NotFoundException(ColumnConstants.NOT_FOUND);
         }
         await this.columnRepository.remove(existingColumn);
     }

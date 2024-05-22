@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 import { IUser } from '../interfaces/user.interface';
 import { UserEntity } from '../entities/user.entity';
+import { UserConstants } from '../constants/USER.constant';
 
 @Injectable()
 export class UserService {
@@ -19,7 +20,7 @@ export class UserService {
     async findOne(id: number): Promise<Omit<IUser, 'password'>> {
         const user = await this.userRepository.findOne({ where: { id } });
         if (!user) {
-            throw new NotFoundException('Такой пользователь не существует');
+            throw new NotFoundException(UserConstants.NOT_FOUND);
         }
         const { password, ...result } = user;
         return result;
@@ -32,7 +33,7 @@ export class UserService {
     async create(user: IUser): Promise<IUser> {
         const existingUser = await this.userRepository.findOne({ where: { email: user.email } });
         if (existingUser) {
-            throw new BadRequestException('Такой пользователь уже существует');
+            throw new BadRequestException(UserConstants.ALREADY_EXISTS);
         }
         user.password = await bcrypt.hash(user.password, 10);
         return this.userRepository.save(user);

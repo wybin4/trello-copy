@@ -34,7 +34,7 @@ export class ColumnController {
     @ApiBearerAuth()
     @ApiOperation({ summary: 'Создать колонку' })
     @ApiResponse({ status: 201, description: 'Колонка успешно создана' })
-    @ApiResponse({ status: 400, description: AppConstants.BAD_REQUEST('Колонка') })
+    @ApiResponse({ status: 400, description: AppConstants.BAD_REQUEST_EXISTS('Колонка') })
     @ApiResponse({ status: 401, description: AppConstants.UNAUTHORIZED })
     @ApiResponse({ status: 403, description: AppConstants.FORBIDDEN })
     @ApiParam({ name: 'userId', type: Number, description: 'Id пользователя' })

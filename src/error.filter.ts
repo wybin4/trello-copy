@@ -7,7 +7,7 @@ export function CatchError(e) {
         throw new ConflictException(e.message);
     } else if (e.status === HttpStatus.UNPROCESSABLE_ENTITY) {
         throw new UnprocessableEntityException(e.message);
-    } else if (e.status === HttpStatus.BAD_REQUEST) {
+    } else if (e.status === HttpStatus.BAD_REQUEST_EXISTS) {
         throw new BadRequestException(e.message);
     } else if (e.status === HttpStatus.GATEWAY_TIMEOUT) {
         throw new GatewayTimeoutException(e.message);

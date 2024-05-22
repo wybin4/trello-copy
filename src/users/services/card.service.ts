@@ -28,6 +28,9 @@ export class CardService {
         if (!existingCard) {
             throw new NotFoundException(CardConstants.NOT_FOUND);
         }
+        if (!dto.title && !dto.description) {
+            throw new BadRequestException('Нужно хотя бы одно поле');
+        }
         if (dto.title) {
             existingCard.title = dto.title;
         }

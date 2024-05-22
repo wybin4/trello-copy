@@ -3,9 +3,9 @@ import { ApiProperty } from '@nestjs/swagger';
 import { UserConstants } from '../constants/USER.constant';
 
 export class CreateUserDto {
-    @ApiProperty({ description: 'Имя пользователя', minLength: 4, example: 'Иван' })
+    @ApiProperty({ description: 'Имя пользователя', minLength: UserConstants.NAME_MIN_LEN, example: 'Иван' })
     @IsString({ message: 'Имя должно быть строкой' })
-    @MinLength(4, { message: 'Имя должно составлять минимум 4 символа' })
+    @MinLength(UserConstants.NAME_MIN_LEN, { message: UserConstants.NAME_MIN_LEN_VALID })
     name: string;
 
     @ApiProperty({ description: UserConstants.EMAIL, example: 'eckyl@bk.ru' })

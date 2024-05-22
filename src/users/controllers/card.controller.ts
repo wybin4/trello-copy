@@ -18,7 +18,7 @@ export class CardController {
     @ApiBearerAuth()
     @ApiOperation({ summary: 'Создать карточку' })
     @ApiResponse({ status: 201, description: 'Карточка успешно создана' })
-    @ApiResponse({ status: 400, description: 'Неверные данные/Карточка уже существует' })
+    @ApiResponse({ status: 400, description: AppConstants.BAD_REQUEST_EXISTS('Карточка') })
     @ApiResponse({ status: 401, description: AppConstants.UNAUTHORIZED })
     @ApiResponse({ status: 403, description: AppConstants.FORBIDDEN })
     async create(@Body() dto: CreateCardDto) {
@@ -68,7 +68,7 @@ export class CardController {
     @ApiOperation({ summary: 'Получить карточку по :id с комментариями' })
     @ApiResponse({ status: 200, description: 'Карточка с комментариями получена' })
     @ApiResponse({ status: 401, description: AppConstants.UNAUTHORIZED })
-    @ApiResponse({ status: 404, description: 'Карточка не найдена' })
+    @ApiResponse({ status: 404, description: CardConstants.NOT_FOUND })
     async findOne(@Param('id') id: number) {
         try {
             return this.cardService.findOne(id);

@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from './user.service';
 import { IUser } from '../interfaces/user.interface';
+import { UserConstants } from '../constants/USER.constant';
 
 @Injectable()
 export class AuthService {
@@ -13,7 +14,7 @@ export class AuthService {
     async validateUser(email: string, password: string): Promise<IUser> {
         const user = await this.usersService.validateUser(email, password);
         if (!user) {
-            throw new NotFoundException('Такой пользователь не существует');
+            throw new NotFoundException(UserConstants.NOT_FOUND);
         }
         return user;
     }
