@@ -1,0 +1,486 @@
+openapi: 3.0.0
+paths:
+  /users/register:
+    post:
+      operationId: UserController_register
+      summary: Регистрация
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserDto'
+      responses:
+        '201':
+          description: Пользователь был зарегистрирован
+        '400':
+          description: Неверные данные/Пользователь уже существует
+      tags:
+        - users
+  /users/login:
+    post:
+      operationId: UserController_login
+      summary: Вход
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginUserDto'
+      responses:
+        '200':
+          description: Пользователь вошел в систему
+        '400':
+          description: Неверные данные
+      tags:
+        - users
+  /users/{id}:
+    get:
+      operationId: UserController_findOne
+      summary: Получить пользователя по :id
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Пользователь получен
+        '401':
+          description: Пользователь неавторизован
+        '404':
+          description: Пользователь не найден
+      tags:
+        - users
+      security:
+        - bearer: []
+  /users/{userId}/columns:
+    get:
+      operationId: ColumnController_findAllByUserId
+      summary: Получить колонки пользователя с карточками по :userId
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          description: Id пользователя
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Колонки с карточками получены
+        '401':
+          description: Пользователь неавторизован
+        '403':
+          description: Доступ запрещен
+      tags:
+        - columns
+      security:
+        - bearer: []
+    post:
+      operationId: ColumnController_create
+      summary: Создать колонку
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          description: Id пользователя
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateColumnDto'
+      responses:
+        '201':
+          description: Колонка успешно создана
+        '400':
+          description: Неверные данные/Колонка уже существует
+        '401':
+          description: Пользователь неавторизован
+        '403':
+          description: Доступ запрещен
+      tags:
+        - columns
+      security:
+        - bearer: []
+    patch:
+      operationId: ColumnController_update
+      summary: Изменить колонку
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          description: Id пользователя
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateColumnDto'
+      responses:
+        '200':
+          description: Колонка успешно изменена
+        '401':
+          description: Пользователь неавторизован
+        '403':
+          description: Доступ запрещен
+        '404':
+          description: Колонка не существует
+      tags:
+        - columns
+      security:
+        - bearer: []
+  /users/{userId}/columns/{id}:
+    delete:
+      operationId: ColumnController_delete
+      summary: Удалить колонку
+      parameters:
+        - name: id
+          required: true
+          in: path
+          description: Id колонки
+          schema:
+            type: number
+        - name: userId
+          required: true
+          in: path
+          description: Id пользователя
+          schema:
+            type: number
+      responses:
+        '204':
+          description: Колонка успешно удалена
+        '401':
+          description: Пользователь неавторизован
+        '403':
+          description: Доступ запрещен
+        '404':
+          description: Колонка не существует
+      tags:
+        - columns
+      security:
+        - bearer: []
+  /users/{userId}/columns/cards:
+    post:
+      operationId: CardController_create
+      summary: Создать карточку
+      parameters:
+        - name: id
+          required: true
+          in: path
+          description: Id карточки
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCardDto'
+      responses:
+        '201':
+          description: Карточка успешно создана
+        '400':
+          description: Неверные данные/Карточка уже существует
+        '401':
+          description: Пользователь неавторизован
+        '403':
+          description: Доступ запрещен
+      tags:
+        - cards
+      security:
+        - bearer: []
+    patch:
+      operationId: CardController_update
+      summary: Изменить карточку
+      parameters:
+        - name: id
+          required: true
+          in: path
+          description: Id карточки
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCardDto'
+      responses:
+        '200':
+          description: Карточка успешно изменена
+        '401':
+          description: Пользователь неавторизован
+        '403':
+          description: Доступ запрещен
+        '404':
+          description: Карточка не существует
+      tags:
+        - cards
+      security:
+        - bearer: []
+  /users/{userId}/columns/cards/{id}:
+    delete:
+      operationId: CardController_delete
+      summary: Удалить карточку
+      parameters:
+        - name: id
+          required: true
+          in: path
+          description: Id карточки
+          schema:
+            type: number
+      responses:
+        '204':
+          description: Карточка успешно удалена
+        '401':
+          description: Пользователь неавторизован
+        '403':
+          description: Доступ запрещен
+        '404':
+          description: Карточка не существует
+      tags:
+        - cards
+      security:
+        - bearer: []
+    get:
+      operationId: CardController_findOne
+      summary: Получить карточку по :id с комментариями
+      parameters:
+        - name: id
+          required: true
+          in: path
+          description: Id карточки
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Карточка с комментариями получена
+        '401':
+          description: Пользователь неавторизован
+        '404':
+          description: Карточка не найдена
+      tags:
+        - cards
+      security:
+        - bearer: []
+  /users/{userId}/columns/cards/comments:
+    post:
+      operationId: CommentController_create
+      summary: Создать комментарий
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCommentDto'
+      responses:
+        '201':
+          description: Комментарий успешно создан
+        '400':
+          description: Неверные данные
+        '401':
+          description: Пользователь неавторизован
+        '403':
+          description: Доступ запрещен
+      tags:
+        - comments
+      security:
+        - bearer: []
+    patch:
+      operationId: CommentController_update
+      summary: Изменить комментарий
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCommentDto'
+      responses:
+        '200':
+          description: Комментарий успешно изменен
+        '401':
+          description: Пользователь неавторизован
+        '403':
+          description: Доступ запрещен
+        '404':
+          description: Комментарий не существует
+      tags:
+        - comments
+      security:
+        - bearer: []
+  /users/{userId}/columns/cards/comments/{id}:
+    delete:
+      operationId: CommentController_delete
+      summary: Удалить комментарий
+      parameters:
+        - name: id
+          required: true
+          in: path
+          description: Id комментария
+          schema:
+            type: number
+      responses:
+        '204':
+          description: Комментарий успешно удален
+        '401':
+          description: Пользователь неавторизован
+        '403':
+          description: Доступ запрещен
+        '404':
+          description: Комментарий не существует
+      tags:
+        - comments
+      security:
+        - bearer: []
+info:
+  title: Notes API
+  description: The notes API description
+  version: '1.0'
+  contact: {}
+tags: []
+servers: []
+components:
+  securitySchemes:
+    bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+  schemas:
+    CreateUserDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Имя пользователя
+          minLength: 4
+          example: Иван
+        email:
+          type: string
+          description: Email пользователя
+          example: eckyl@bk.ru
+        password:
+          type: string
+          description: Пароль пользователя
+          minLength: 8
+          example: password123
+      required:
+        - name
+        - email
+        - password
+    LoginUserDto:
+      type: object
+      properties:
+        email:
+          type: string
+          description: Email пользователя
+          example: eckyl@bk.ru
+        password:
+          type: string
+          description: Пароль пользователя
+          minLength: 8
+          example: password123
+      required:
+        - email
+        - password
+    CreateColumnDto:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Название колонки
+          example: План
+      required:
+        - title
+    UpdateColumnDto:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Id колонки
+          example: 5
+        title:
+          type: string
+          description: Название колонки
+          example: План-капкан
+      required:
+        - id
+        - title
+    CreateCardDto:
+      type: object
+      properties:
+        columnId:
+          type: number
+          description: Id колонки
+          example: 5
+        title:
+          type: string
+          description: Заголовок карточки
+          minLength: 1
+          example: Сбор требований
+        description:
+          type: string
+          description: Описание карточки
+          minLength: 1
+          example: Прочтение требований в таблице и pdf-документе
+      required:
+        - columnId
+        - title
+    UpdateCardDto:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Id карточки
+          example: 1
+        title:
+          type: string
+          description: Заголовок карточки
+          minLength: 1
+          example: Сбор требований
+        description:
+          type: string
+          description: Описание карточки
+          minLength: 1
+          example: Прочтение требований в таблице и pdf-документе
+      required:
+        - id
+    CreateCommentDto:
+      type: object
+      properties:
+        cardId:
+          type: number
+          description: Id карточки
+          example: 1
+        text:
+          type: string
+          description: Текст комментария
+          minLength: 1
+          example: Сбор требований
+      required:
+        - cardId
+        - text
+    UpdateCommentDto:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Id комментария
+          example: 1
+        text:
+          type: string
+          description: Текст комментария
+          minLength: 1
+          example: Сбор требований
+      required:
+        - id
+        - text
